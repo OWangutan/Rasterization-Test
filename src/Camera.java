@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Camera extends JPanel{
   private Point3D position;
   private ArrayList<Object3D> scene;
+
   public Camera (Point3D position, ArrayList<Object3D> scene) {
     this.position = position;
     this.scene = scene;
@@ -12,7 +13,7 @@ public class Camera extends JPanel{
   protected void paintComponent(Graphics g){
     super.paintComponent(g);
       
-    for(int i = 0; i < scene.Size(); i++){
+    for(int i = 0; i < scene.size(); i++){
       scene.get(i).render();
     }
 
@@ -21,7 +22,7 @@ public class Camera extends JPanel{
     } catch(Exception e) {
         System.out.println(e);
     }
-      //repaint();
+      repaint();
   }
 }
 
