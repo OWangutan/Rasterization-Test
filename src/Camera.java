@@ -3,19 +3,26 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Camera extends JPanel{
-    protected void paintComponent(Graphics g){
-        super.paintComponent(g);
-
-
-
-
-        try {
-            Thread.sleep(1000);
-        } catch(Exception e) {
-            System.out.println(e);
-        }
-        //repaint();
+  private Point3D position;
+  private ArrayList<Object3D> scene;
+  public Camera (Point3D position, ArrayList<Object3D> scene) {
+    this.position = position;
+    this.scene = scene;
+  }
+  protected void paintComponent(Graphics g){
+    super.paintComponent(g);
+      
+    for(int i = 0; i < scene.Size(); i++){
+      scene.get(i).render();
     }
+
+    try {
+        Thread.sleep(1000);
+    } catch(Exception e) {
+        System.out.println(e);
+    }
+      //repaint();
+  }
 }
 
 
