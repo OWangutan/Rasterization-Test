@@ -12,7 +12,6 @@ public class Camera extends JPanel{
   }
   protected void paintComponent(Graphics g){
     super.paintComponent(g);
-      
     for(int i = 0; i < scene.size(); i++){
       scene.get(i).render();
     }

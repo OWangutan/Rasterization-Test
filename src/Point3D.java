@@ -40,6 +40,12 @@
         public void setz(double z){
             this.z = z;
         }
+        public static Point3D difference(Point3D point1, Point3D point2){
+          return new Point3D(point1.x - point2.x, point1.y - point2.y, point1.z - point2.z);
+        }
+        public static double sumXYZ(){
+          return x + y + z;
+        }
         public String toString(){
             return "("+x+","+y+","+z+")";
         }

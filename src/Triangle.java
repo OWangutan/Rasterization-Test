@@ -10,13 +10,14 @@ public class Triangle extends Object3D{
             this.pointC = pointC;
         }
 
-        public void render(Point3D focus){
-            int[] x = new int[3];
-            int[] y = new int[3];
-            for(int i = 0; i < 3; i++){
-
-            }
-            Graphics.fillPolygon(x,y, 3);
+        public int[][] render(Point3D focus){
+            int[][] cord = new int[3][2];
+            //plane 0x + 1y + 0z = 0
+            Point3D.difference(focus, pointA).sumXYZ();
+            Point3D.difference(focus, pointB).sumXYZ();
+            Point3D.difference(focus, pointC).sumXYZ();
+            
+            return cord;
         }
 
 
