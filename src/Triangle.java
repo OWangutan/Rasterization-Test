@@ -10,13 +10,13 @@ public class Triangle extends Object3D{
             this.pointC = pointC;
         }
 
-        public void render(Point3D focus){
+        public Polygon render(Point3D focus){
             int[] x = new int[3];
             int[] y = new int[3];
             for(int i = 0; i < 3; i++){
 
             }
-            Graphics.fillPolygon(x,y, 3);
+
         }
 
 
