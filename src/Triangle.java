@@ -10,10 +10,20 @@ public class Triangle extends Object3D{
             this.pointC = pointC;
         }
 
-        public Polygon render(){
-          int 
-          return new Polygon()
+
+        public Polygon render(Point3D focus){
+            Point3D[] pPoints = {pointA, pointB, pointC};
+            int[] xpoints = new int[3];
+            int[] ypoints = new int[3];
+            for(int i = 0; i < 3; i++){
+                Vector3D vector = Vector3D.newVector(focus,pPoints[i]);
+                double t = (-focus.getz())/vector.getz();
+
+            }
+            return new Polygon(xpoints, ypoints, 3);
         }
+
+
 
         public Point3D getPointA() {
             return pointA;
