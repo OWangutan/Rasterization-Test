@@ -10,6 +10,10 @@ public class Triangle extends Object3D{
             this.pointC = pointC;
         }
 
+        public Polygon render(){
+          int 
+          return new Polygon()
+        }
 
         public Point3D getPointA() {
             return pointA;
