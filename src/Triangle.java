@@ -18,7 +18,8 @@ public class Triangle extends Object3D{
             for(int i = 0; i < 3; i++){
                 Vector3D vector = Vector3D.newVector(focus,pPoints[i]);
                 double t = (-focus.getz())/vector.getz();
-
+                xpoints[i] = (int)(focus.getx()+ vector.getx()*t);
+                ypoints[i] = (int)(focus.gety()+ vector.gety()*t);
             }
             return new Polygon(xpoints, ypoints, 3);
         }
@@ -36,7 +37,9 @@ public class Triangle extends Object3D{
         public Point3D getPointC() {
             return pointC;
         }
-
+        public Triangle shift(Point3D position){
+          return new Triangle(Point3D.translate(pointA,position),Point3D.translate(pointB,position),Point3D.translate(pointC,position));
+        }
         public void setPoint1(Point3D pointA) {
             this.pointA = pointA;
         }
