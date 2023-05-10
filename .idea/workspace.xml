@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1982e667-41bf-41c8-80bc-d9bbd9c583d2" name="Changes" comment="updates.p4">
+    <list default="true" id="1982e667-41bf-41c8-80bc-d9bbd9c583d2" name="Changes" comment="updates.p6">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Camera.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Object3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Object3D.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Point3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Point3D.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Triangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Triangle.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -98,7 +96,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681829409938</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="updates.p6">
+      <created>1683298181277</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1683298181277</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -117,6 +122,7 @@
     <MESSAGE value="updates.p2" />
     <MESSAGE value="updates.p3" />
     <MESSAGE value="updates.p4" />
-    <option name="LAST_COMMIT_MESSAGE" value="updates.p4" />
+    <MESSAGE value="updates.p6" />
+    <option name="LAST_COMMIT_MESSAGE" value="updates.p6" />
   </component>
 </project>

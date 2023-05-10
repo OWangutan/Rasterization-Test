@@ -21,6 +21,9 @@ public class Triangle extends Object3D{
                 xpoints[i] = (int)(focus.getx()+ vector.getx()*t);
                 ypoints[i] = (int)(focus.gety()+ vector.gety()*t);
             }
+            System.out.println(xpoints[0]);
+            System.out.println(xpoints[1]);
+            System.out.println(xpoints[2]);
             return new Polygon(xpoints, ypoints, 3);
         }
 
