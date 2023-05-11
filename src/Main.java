@@ -1,13 +1,14 @@
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        ArrayList<Object3D> scene = new ArrayList<Object3D>();
+        ArrayList<Triangle> scene = new ArrayList<Triangle>();
         Point3D p1 = new Point3D(-50,-50,5);
         Point3D p2 = new Point3D(50,-50,5);
         Point3D p3 = new Point3D(50,50,5);
-        Triangle test = new Triangle(p1,p2,p3);
+        Triangle test = new Triangle(p1,p2,p3, new Color(0, 255, 200));
         scene.add(test);
 
         JFrame frame = new JFrame();

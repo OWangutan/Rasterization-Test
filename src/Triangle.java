@@ -1,13 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
-public class Triangle extends Object3D{
+public class Triangle{
         private Point3D pointA;
         private Point3D pointB;
         private Point3D pointC;
-        public Triangle(Point3D pointA, Point3D pointB, Point3D pointC){
+        private Color color;
+        public Triangle(Point3D pointA, Point3D pointB, Point3D pointC, Color color){
             this.pointA = pointA;
             this.pointB = pointB;
             this.pointC = pointC;
+            this.color = color;
         }
 
 
@@ -40,8 +42,11 @@ public class Triangle extends Object3D{
         public Point3D getPointC() {
             return pointC;
         }
+        public Color getColor(){
+            return color;
+        }
         public Triangle shift(Point3D position){
-          return new Triangle(Point3D.translate(pointA,position),Point3D.translate(pointB,position),Point3D.translate(pointC,position));
+          return new Triangle(Point3D.translate(pointA,position),Point3D.translate(pointB,position),Point3D.translate(pointC,position),color);
         }
         public void setPoint1(Point3D pointA) {
             this.pointA = pointA;

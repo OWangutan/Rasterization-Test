@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 public class Camera extends JPanel{
   private Point3D position;
-  private ArrayList<Object3D> scene = new ArrayList<Object3D>();
+  private ArrayList<Triangle> scene = new ArrayList<Triangle>();
   private Point3D focus;
 
-  public Camera (Point3D position, ArrayList<Object3D> scene) {
+  public Camera (Point3D position, ArrayList<Triangle> scene) {
     this.position = position;
     setFocusable(true);
     addKeyListener(new KeyListener() {
@@ -21,24 +21,26 @@ public class Camera extends JPanel{
       @Override
       public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_W) {
-          position.sety(position.gety()+10);
+          position.setz(position.getz() + 10);
           setup(scene);
         }
         if (e.getKeyCode() == KeyEvent.VK_A) {
-
+          position.setx(position.getx() - 10);
+          setup(scene);
         }
         if (e.getKeyCode() == KeyEvent.VK_S) {
-
+          position.setz(position.getz() - 10);
+          setup(scene);
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
-
+          position.setx(position.getx() + 10);
+          setup(scene);
         }
       }
       @Override
       public void keyReleased(KeyEvent e) {
       }
     });
-    setBackground(new Color(255,255,200));
     setup(scene);
   }
 
@@ -53,15 +55,25 @@ public class Camera extends JPanel{
     System.out.println(focusDistance);
     focus = new Point3D(position.getx(), position.gety(), position.getz() - focusDistance);
   }
-  private void setup(ArrayList<Object3D> scene){
+  private void setup(ArrayList<Triangle> scene){
+    this.scene.clear();
     for (int i = 0; i < scene.size(); i++){
       this.scene.add(scene.get(i).shift(position));
     }
   }
   protected void paintComponent(Graphics g){
     super.paintComponent(g);
+    //anti-aliasing
+    Graphics2D g2 = (Graphics2D)g;
+    RenderingHints rh = new RenderingHints(
+            RenderingHints.KEY_TEXT_ANTIALIASING,
+            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    g2.setRenderingHints(rh);
+
+    g.setColor(new Color(255,255,200));
     g.fillRect(0,0,getWidth(),getHeight());
     for(int i = 0; i < scene.size(); i++){
+      g.setColor(scene.get(i).getColor());
       Polygon triangle = scene.get(i).render(focus);
       triangle.translate(getWidth()/2,getHeight()/2);
       g.fillPolygon(triangle);

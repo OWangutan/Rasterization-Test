@@ -14,8 +14,8 @@ public class Vector3D{
         this.z = vector3D.z;
     }
     public static Vector3D newVector(Point3D p,Point3D q){
-        return new Vector3D( p.getx()- q.getx(),p.gety()- q.gety(),p.getz()- q.getz())
-;    }
+        return new Vector3D( p.getx()- q.getx(),p.gety()- q.gety(),p.getz()- q.getz());
+    }
     public void setPosition(double x, double y, double z){
         this.x = x;
         this.y = y;
