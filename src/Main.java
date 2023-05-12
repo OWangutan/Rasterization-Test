@@ -39,6 +39,8 @@ public class Main {
         //ground
 
 
+
+
         Point3D p1 = new Point3D(-50,-50,5);
         Point3D p2 = new Point3D(50,-50,5);
         Point3D p3 = new Point3D(50,50,5);
@@ -51,6 +53,8 @@ public class Main {
         scene.add(test2);
         scene.add(test3);
 
+
+
         JFrame frame = new JFrame();
         frame.setSize(500,500);
         frame.setResizable(false);
@@ -58,5 +62,23 @@ public class Main {
         frame.add(camera);
         frame.setVisible(true);
         camera.setFov(70);
+
+
+
+//        while (true) {
+//            try {
+//                Thread.sleep(10);
+//            } catch (Exception e) {
+//                System.out.println(e);
+//            }
+//            int newX = Rotate.calculateX(p1,10,10,10);
+//            int newY = Rotate.calculateY(p1,10,10,10);
+//            int newZ = Rotate.calculateZ(p1,10,10,10);
+//            p1.setx(newX);
+//            p1.sety(newY);
+//            p1.setz(newZ);
+//
+//        }
+
     }
 }

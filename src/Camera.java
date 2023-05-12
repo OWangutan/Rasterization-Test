@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class Camera extends JPanel{
   private Point3D position;
   private ArrayList<Triangle> scene = new ArrayList<Triangle>();
+  private ArrayList<Triangle> renderList = new ArrayList<Triangle>();
   private Point3D focus;
 
   public Camera (Point3D position, ArrayList<Triangle> scene) {
@@ -42,24 +43,17 @@ public class Camera extends JPanel{
       }
     });
     setup(scene);
-  }
-
-
-
-
-
-
-
-  public void setFov(double fov){
+  }public void setFov(double fov){
     double focusDistance = getWidth()/2 * Math.sin(Math.toRadians(90 - fov/2))/Math.sin(Math.toRadians(fov/2));
     System.out.println(focusDistance);
     focus = new Point3D(position.getx(), position.gety(), position.getz() - focusDistance);
   }
   private void setup(ArrayList<Triangle> scene){
-    this.scene.clear();
+    renderList.clear();
     for (int i = 0; i < scene.size(); i++){
-      this.scene.add(scene.get(i).shift(position));
+      renderList.add(scene.get(i).shift(position));
     }
+
   }
   protected void paintComponent(Graphics g){
     super.paintComponent(g);
@@ -72,19 +66,17 @@ public class Camera extends JPanel{
 
     g.setColor(new Color(255,255,200));
     g.fillRect(0,0,getWidth(),getHeight());
-    for(int i = 0; i < scene.size(); i++){
-      g.setColor(scene.get(i).getColor());
-      Polygon triangle = scene.get(i).render(focus);
+    for(int i = 0; i < renderList.size(); i++){
+      g.setColor(renderList.get(i).getColor());
+      Polygon triangle = renderList.get(i).render(focus);
       triangle.translate(getWidth()/2,getHeight()/2);
       g.fillPolygon(triangle);
     }
     try {
-        Thread.sleep(100);
+      Thread.sleep(100);
     } catch(Exception e) {
-        System.out.println(e);
+      System.out.println(e);
     }
-      repaint();
+    repaint();
   }
 }
-
-
