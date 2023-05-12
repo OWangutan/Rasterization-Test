@@ -53,7 +53,10 @@ public class Camera extends JPanel{
     for (int i = 0; i < scene.size(); i++){
       renderList.add(scene.get(i).shift(position));
     }
+    //sorting renderList
+    for(int i = 1; i< renderList.size(); i++){
 
+    }
   }
   protected void paintComponent(Graphics g){
     super.paintComponent(g);
