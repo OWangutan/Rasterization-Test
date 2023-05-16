@@ -11,11 +11,7 @@ public class Triangle{
             this.pointC = pointC;
             this.color = color;
         }
-        public Point3D getCenter(){
-            return new Point3D((pointA.getx() + pointB.getx() + pointC.getx())/3,
-                    (pointA.gety() + pointB.gety() + pointC.gety())/3,
-                    (pointA.getx() + pointB.getx() + pointC.getx())/3);
-        }
+
 
         public Polygon render(Point3D focus){
             Point3D[] pPoints = {pointA, pointB, pointC};
@@ -29,7 +25,12 @@ public class Triangle{
             }
             return new Polygon(xpoints, ypoints, 3);
         }
+        public Point3D getCenter(){
+             return new Point3D((pointA.getx() + pointB.getx() + pointC.getx())/3,
+                                (pointA.gety() + pointB.gety() + pointC.gety())/3,
+                                (pointA.getz() + pointB.getz() + pointC.getz())/3);
 
+        }
 
 
         public Point3D getPointA() {

@@ -26,7 +26,8 @@
             return x;
         }
         public double getDistance(Point3D point){
-            return Math.sqrt(Math.pow(x - point.getx(),2)+ Math.pow(y - point.gety(),2)+ Math.pow(z - point.getz(),2));
+            double distance = Math.sqrt(Math.pow(x - point.getx(),2)+ Math.pow(y - point.gety(),2)+ Math.pow(z - point.getz(),2));
+            return distance;
         }
         public double gety(){
             return y;
