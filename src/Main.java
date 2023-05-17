@@ -100,7 +100,7 @@ public class Main {
         scene.add(f6t2);
 //        scene.add(test2);
 //        scene.add(test3);
-
+        scene.addAll(Shapes3D.addCube(new Point3D(60,60,60),40,100,130,new Color(100,100,0)));
 
 
 
@@ -109,7 +109,7 @@ public class Main {
 
 
         JFrame frame = new JFrame();
-        frame.setSize(1920,1080);
+        frame.setSize(1280,720);
         frame.setResizable(false);
         Camera camera = new Camera(new Point3D(0,0,0),scene);
         frame.add(camera);

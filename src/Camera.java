@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
@@ -6,15 +7,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
+
+
 public class Camera extends JPanel{
   private Point3D position;
   private ArrayList<Triangle> scene = new ArrayList<Triangle>();
   private ArrayList<Triangle> renderList = new ArrayList<Triangle>();
   private Point3D focus;
-  private int groundY = 0;
-  private int maxAngleUp = 16;
-  private int maxAngleDown = -16;
-  private int angle = 0;
 
 
   public Camera (Point3D position, ArrayList<Triangle> scene) {
@@ -26,7 +25,11 @@ public class Camera extends JPanel{
       public void keyTyped(KeyEvent e) {
 
 
+
+
       }
+
+
 
 
       @Override
@@ -52,35 +55,25 @@ public class Camera extends JPanel{
           setup(scene);
         }
         if (e.getKeyCode() == KeyEvent.VK_Q) {
-          if (position.gety() < 0) {
-            position.sety(position.gety() + 10);
-            setup(scene);
-          }
+          position.sety(position.gety() + 10);
+          setup(scene);
         }
         //just needs correct math for rotation
         if (e.getKeyCode() == KeyEvent.VK_UP) {
-          if (angle < maxAngleUp) {
-            groundY = groundY + 33;
-            for (int i = 0; i < scene.size(); i++) {
-              scene.get(i).setPoint1(Rotate.rotatePoints(scene.get(i).getPointA(), .1, 0, 0));
-              scene.get(i).setPoint2(Rotate.rotatePoints(scene.get(i).getPointB(), .1, 0, 0));
-              scene.get(i).setPoint3(Rotate.rotatePoints(scene.get(i).getPointC(), .1, 0, 0));
-            }
-            setup(scene);
-            angle++;
+          for (int i = 0; i < scene.size();i++) {
+            scene.get(i).setPoint1(Rotate.rotatePoints(scene.get(i).getPointA(),.1,0,0));
+            scene.get(i).setPoint2(Rotate.rotatePoints(scene.get(i).getPointB(),.1,0,0));
+            scene.get(i).setPoint3(Rotate.rotatePoints(scene.get(i).getPointC(),.1,0,0));
           }
+          setup(scene);
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-          if (angle > maxAngleDown) {
-          groundY = groundY - 33;
           for (int i = 0; i < scene.size();i++) {
             scene.get(i).setPoint1(Rotate.rotatePoints(scene.get(i).getPointA(),-.1,0,0));
             scene.get(i).setPoint2(Rotate.rotatePoints(scene.get(i).getPointB(),-.1,0,0));
             scene.get(i).setPoint3(Rotate.rotatePoints(scene.get(i).getPointC(),-.1,0,0));
           }
           setup(scene);
-            angle--;
-          }
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
           for (int i = 0; i < scene.size();i++) {
@@ -104,7 +97,9 @@ public class Camera extends JPanel{
       }
     });
 
+
     setup(scene);
+
 
   }
   public void setFov(double fov){
@@ -114,6 +109,7 @@ public class Camera extends JPanel{
   private void setup(ArrayList<Triangle> scene){
     renderList.clear();
     setFov(70);
+
 
     for (int i = 0; i < scene.size(); i++){
       renderList.add(scene.get(i).shift(position));
@@ -129,21 +125,29 @@ public class Camera extends JPanel{
       }
       renderList.set(j + 1, key);
     }
-  }
 
+
+    for (int i = 0; i < renderList.size();i++){
+      System.out.println(renderList.get(i));
+      System.out.println(renderList.get(i).getCenter());
+
+
+    }
+    //System.out.println(focus);
+  }
   protected void paintComponent(Graphics g){
     super.paintComponent(g);
-    //sky
+
+
     g.setColor(new Color(200,200,255));
     g.fillRect(0,0,getWidth(),getHeight());
-    //ground
-    g.setColor(new Color(52,52,52));
-    g.fillRect(0,getHeight()/2  + groundY ,getWidth(),getHeight()/2 - groundY + 1);
     for(int i = renderList.size()-1; i >= 0; i--){
-        g.setColor(renderList.get(i).getColor());
-        Polygon triangle = renderList.get(i).render(focus);
-        triangle.translate(getWidth()/2,getHeight()/2);
-        g.fillPolygon(triangle);
+      //System.out.println(renderList.get(i));
+      g.setColor(renderList.get(i).getColor());
+      Polygon triangle = renderList.get(i).render(focus);
+      triangle.translate(getWidth()/2,getHeight()/2);
+      g.fillPolygon(triangle);
+
 
     }
     try {
@@ -154,3 +158,4 @@ public class Camera extends JPanel{
     repaint();
   }
 }
+
