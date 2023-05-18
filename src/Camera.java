@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
@@ -10,13 +9,25 @@ import java.util.Collections;
 
 
 public class Camera extends JPanel{
+  int height;
+  int width;
   private Point3D position;
   private ArrayList<Triangle> scene = new ArrayList<Triangle>();
   private ArrayList<Triangle> renderList = new ArrayList<Triangle>();
   private Point3D focus;
+  private double focusDistance;
+  private int groundY = 0;
+  private int maxAngleUp = 16;
+  private int maxAngleDown = -16;
+  private int angle = 0;
 
 
-  public Camera (Point3D position, ArrayList<Triangle> scene) {
+
+
+  public Camera (Point3D position, ArrayList<Triangle> scene, int width, int height) {
+    setBackground(new Color(      173, 216, 230));
+    this.width = width;
+    this.height = height;
     this.position = position;
     setFov(70);
     setFocusable(true);
@@ -55,39 +66,57 @@ public class Camera extends JPanel{
           setup(scene);
         }
         if (e.getKeyCode() == KeyEvent.VK_Q) {
-          position.sety(position.gety() + 10);
-          setup(scene);
+          if (position.gety() < 0) {
+            position.sety(position.gety() + 10);
+            setup(scene);
+          }
         }
         //just needs correct math for rotation
         if (e.getKeyCode() == KeyEvent.VK_UP) {
-          for (int i = 0; i < scene.size();i++) {
-            scene.get(i).setPoint1(Rotate.rotatePoints(scene.get(i).getPointA(),.1,0,0));
-            scene.get(i).setPoint2(Rotate.rotatePoints(scene.get(i).getPointB(),.1,0,0));
-            scene.get(i).setPoint3(Rotate.rotatePoints(scene.get(i).getPointC(),.1,0,0));
+          if (angle < maxAngleUp) {
+            groundY = groundY + 33;
+            for (int i = scene.size()-1; i >= 0; i--) {
+              Triangle triangle = scene.get(i).shift(new Point3D(position.getx(),position.gety(),position.getz() + focusDistance));
+              triangle.setPoint1(Rotate.rotatePoints(triangle.getPointA(),.05,0,0));
+              triangle.setPoint2(Rotate.rotatePoints(triangle.getPointB(),.05,0,0));
+              triangle.setPoint3(Rotate.rotatePoints(triangle.getPointC(),.05,0,0));
+              scene.set(i,triangle.unShift(new Point3D(position.getx(),position.gety(),position.getz() + focusDistance)));
+            }
+            setup(scene);
+            angle++;
           }
-          setup(scene);
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-          for (int i = 0; i < scene.size();i++) {
-            scene.get(i).setPoint1(Rotate.rotatePoints(scene.get(i).getPointA(),-.1,0,0));
-            scene.get(i).setPoint2(Rotate.rotatePoints(scene.get(i).getPointB(),-.1,0,0));
-            scene.get(i).setPoint3(Rotate.rotatePoints(scene.get(i).getPointC(),-.1,0,0));
+          if (angle > maxAngleDown) {
+            groundY = groundY - 33;
+            for (int i = scene.size()-1; i >= 0; i--) {
+              Triangle triangle = scene.get(i).shift(new Point3D(position.getx(),position.gety(),position.getz() + focusDistance));
+              triangle.setPoint1(Rotate.rotatePoints(triangle.getPointA(),-.05,0,0));
+              triangle.setPoint2(Rotate.rotatePoints(triangle.getPointB(),-.05,0,0));
+              triangle.setPoint3(Rotate.rotatePoints(triangle.getPointC(),-.05,0,0));
+              scene.set(i,triangle.unShift(new Point3D(position.getx(),position.gety(),position.getz() + focusDistance)));
+            }
+            setup(scene);
+            angle--;
           }
-          setup(scene);
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-          for (int i = 0; i < scene.size();i++) {
-            scene.get(i).setPoint1(Rotate.rotatePoints(scene.get(i).getPointA(),0,-.1,0));
-            scene.get(i).setPoint2(Rotate.rotatePoints(scene.get(i).getPointB(),0,-.1,0));
-            scene.get(i).setPoint3(Rotate.rotatePoints(scene.get(i).getPointC(),0,-.1,0));
+          for (int i = scene.size()-1; i >= 0; i--) {
+            Triangle triangle = scene.get(i).shift(new Point3D(position.getx(),position.gety(),position.getz() + focusDistance));
+            triangle.setPoint1(Rotate.rotatePoints(triangle.getPointA(),0,-.05,0));
+            triangle.setPoint2(Rotate.rotatePoints(triangle.getPointB(),0,-.05,0));
+            triangle.setPoint3(Rotate.rotatePoints(triangle.getPointC(),0,-.05,0));
+            scene.set(i,triangle.unShift(new Point3D(position.getx(),position.gety(),position.getz() + focusDistance)));
           }
           setup(scene);
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-          for (int i = 0; i < scene.size();i++) {
-            scene.get(i).setPoint1(Rotate.rotatePoints(scene.get(i).getPointA(),0,.1,0));
-            scene.get(i).setPoint2(Rotate.rotatePoints(scene.get(i).getPointB(),0,.1,0));
-            scene.get(i).setPoint3(Rotate.rotatePoints(scene.get(i).getPointC(),0,.1,0));
+          for (int i = scene.size()-1; i >= 0; i--) {
+            Triangle triangle = scene.get(i).shift(new Point3D(position.getx(),position.gety(),position.getz() + focusDistance));
+            triangle.setPoint1(Rotate.rotatePoints(triangle.getPointA(),0,.05,0));
+            triangle.setPoint2(Rotate.rotatePoints(triangle.getPointB(),0,.05,0));
+            triangle.setPoint3(Rotate.rotatePoints(triangle.getPointC(),0,.05,0));
+            scene.set(i,triangle.unShift(new Point3D(position.getx(),position.gety(),position.getz() + focusDistance)));
           }
           setup(scene);
         }
@@ -103,16 +132,20 @@ public class Camera extends JPanel{
 
   }
   public void setFov(double fov){
-    double focusDistance = getWidth()/2 * Math.sin(Math.toRadians(90 - fov/2))/Math.sin(Math.toRadians(fov/2));
-    focus = new Point3D(0, 0, -focusDistance);
+    focusDistance = -(width/2 * Math.sin(Math.toRadians(90 - fov/2))/Math.sin(Math.toRadians(fov/2))) ;
+    focus = new Point3D(0, 0, focusDistance);
   }
   private void setup(ArrayList<Triangle> scene){
     renderList.clear();
-    setFov(70);
 
 
     for (int i = 0; i < scene.size(); i++){
-      renderList.add(scene.get(i).shift(position));
+      Triangle triangle = scene.get(i).shift(position);
+      if(triangle.getPointA().getz() > focusDistance && triangle.getPointB().getz() > focusDistance && triangle.getPointC().getz() > focusDistance) {
+
+
+        renderList.add(triangle);
+      }
     }
     //sorting renderList
     int n = renderList.size();
@@ -125,37 +158,34 @@ public class Camera extends JPanel{
       }
       renderList.set(j + 1, key);
     }
-
-
-    for (int i = 0; i < renderList.size();i++){
-      System.out.println(renderList.get(i));
-      System.out.println(renderList.get(i).getCenter());
-
-
-    }
-    //System.out.println(focus);
+  }
+  private void followCar(Point3D car){
+    position = car;
   }
   protected void paintComponent(Graphics g){
     super.paintComponent(g);
+    Graphics2D g2d = (Graphics2D) g;
 
 
-    g.setColor(new Color(200,200,255));
-    g.fillRect(0,0,getWidth(),getHeight());
+    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+    g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
+    g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+
+
     for(int i = renderList.size()-1; i >= 0; i--){
-      //System.out.println(renderList.get(i));
-      g.setColor(renderList.get(i).getColor());
+      g2d.setColor(renderList.get(i).getColor());
       Polygon triangle = renderList.get(i).render(focus);
-      triangle.translate(getWidth()/2,getHeight()/2);
-      g.fillPolygon(triangle);
+      triangle.translate(width/2,height/2);
+      g2d.fillPolygon(triangle);
 
 
     }
     try {
-      Thread.sleep(100);
+      Thread.sleep(10);
     } catch(Exception e) {
       System.out.println(e);
     }
     repaint();
   }
 }
-

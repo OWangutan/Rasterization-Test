@@ -1,6 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.FloatControl;
+import java.io.File;
+import java.io.IOException;
+
+
 
 
 //sound imports
@@ -8,134 +18,96 @@ import java.io.File;
 import javax.sound.sampled.*;
 
 
+
+
 public class Main {
+
+
     public static void main(String[] args) {
-
-
-
-
         ArrayList<Triangle> scene = new ArrayList<Triangle>();
-//
-//        Point3D point1 = new Point3D(-50,-50,5);
-//        Point3D point2 = new Point3D(-50,-100,50);
-//        Point3D point3 = new Point3D(-100,-50,50);
-//
-//        Triangle tester = new Triangle(point1,point2,point3,new Color(255,0,0));
-//
-//        scene.add(tester);
-//
-//
-//        //ground
-//        ArrayList<Triangle> ground = new ArrayList<Triangle>();
-//        Point3D g1 = new Point3D(-500,100,500);
-//        Point3D g2 = new Point3D(500,100,500);
-//        Point3D g3 = new Point3D(500,100,-500);
-//        Triangle ground1 = new Triangle(g1,g2,g3, new Color(31,71,24));
-//        ground.add(ground1);
-//        //      scene.add(ground1);
-//
-//        Point3D g4 = new Point3D(-500,100,-500);
-//        Triangle ground2 = new Triangle(g1,g3,g4, new Color(31,71,24));
-//        ground.add(ground2);
-//        //     scene.add(ground2);
-//
-//
-//        //ground
-//
-//
-//
-//
-        //face 1
-        Point3D f1p1 = new Point3D(-50,-50,5);
-        Point3D f1p2 = new Point3D(50,-50,5);
-        Point3D f1p3 = new Point3D(50,50,5);
+        //ground
+        Point3D ground = new Point3D(0,0,0);
+        Color[] groundColor = { new Color(86, 125,70),
+                new Color(126,200,80)};
+        int x = 0;
 
 
-        Point3D f1p4 = new Point3D(-50,50,5);
-        //face 2
-        Point3D f2p1 = new Point3D(-50,-50,105);
-        Point3D f2p2 = new Point3D(50,-50,105);
-        //face 3
-        Point3D f3p1 = new Point3D(-50,50,105);
-        Point3D f3p2 = new Point3D(50,50,105);
-
-
-//
-//        Point3D tP3 = new Point3D(100,-50,-30);
-        Triangle f1t1 = new Triangle(f1p1,f1p2,f1p3, new Color(3, 232, 252));
-        Triangle f1t2 = new Triangle(f1p1,f1p4,f1p3, new Color (3, 232, 252));
-
-
-        Triangle f2t1 = new Triangle(f1p1,f2p1,f1p2, new Color (3, 148, 252));
-        Triangle f2t2 = new Triangle(f1p2,f2p2,f2p1,new Color (3, 148, 252));
-
-
-        Triangle f3t1 = new Triangle(f2p2,f3p2,f3p1,new Color(3, 94, 252));
-        Triangle f3t2 = new Triangle(f2p2,f2p1,f3p1,new Color(3, 94, 252));
-
-
-        Triangle f4t1 = new Triangle(f3p1,f1p3,f3p2,new Color(3, 40, 252));
-        Triangle f4t2 = new Triangle(f1p3,f1p4,f3p1,new Color(3, 40, 252));
-
-
-        Triangle f5t1 = new Triangle(f1p4,f3p1,f2p1,new Color (32, 3, 252));
-        Triangle f5t2 = new Triangle(f1p1,f2p1,f3p1, new Color (32, 3, 252));
-
-
-        Triangle f6t1 = new Triangle(f1p2,f1p3,f3p2,new Color(17, 2, 99));
-        Triangle f6t2 = new Triangle(f2p2,f1p2,f3p2, new Color(17, 2, 99));
-//        Triangle test2 = new Triangle(p1,p2,tP3, new Color(58, 128, 46));
-//        Triangle test3 = new Triangle(p2,p3,tP3, new Color(104, 237, 81));
-        scene.add(f1t1);
-        scene.add(f1t2);
-        scene.add(f2t1);
-        scene.add(f2t2);
-        scene.add(f3t1);
-        scene.add(f3t2);
-        scene.add(f4t1);
-        scene.add(f4t2);
-        scene.add(f5t1);
-        scene.add(f5t2);
-        scene.add(f6t1);
-        scene.add(f6t2);
-//        scene.add(test2);
-//        scene.add(test3);
-        scene.addAll(Shapes3D.addCube(new Point3D(60,60,60),40,100,130,new Color(100,100,0)));
+        for (int i = 0; i < 21; i++){
+            for(int j = 0; j < 21; j++){
+                scene.addAll(Shapes3D.addSquareX(new Point3D(ground.getx() + 250 * j,ground.gety(),ground.getz() + 250 * i),250,250,groundColor[x]));
+                if(x == 0){
+                    x = 1;
+                } else {
+                    x = 0;
+                }
+            }
+        }
+        //car
+        scene.addAll(Shapes3D.addRaceCar1(new Point3D(0,-200,0)));
 
 
 
 
-
-
-
+        int height = 720;
+        int width = 1280;
         JFrame frame = new JFrame();
-        frame.setSize(1280,720);
+        frame.setSize(width,height);
         frame.setResizable(false);
-        Camera camera = new Camera(new Point3D(0,0,0),scene);
+        Camera camera = new Camera(new Point3D(0,-100,0),scene,1280,720);
         frame.add(camera);
         frame.setVisible(true);
         camera.setFov(70);
 
 
+        String filePath = "Trance - 009 Sound System Dreamscape (HD).wav";
+        Clip clip = playMusic(filePath);
 
 
+        if (clip != null) {
+            // Adjust the volume (0.0f to 1.0f)
+            float volume = 0f; // 50% volume
+            setVolume(clip, volume);
+        }
 
 
-//        while (true) {
-//            try {
-//                Thread.sleep(10);
-//            } catch (Exception e) {
-//                System.out.println(e);
-//            }
-//            int newX = Rotate.calculateX(p1,10,10,10);
-//            int newY = Rotate.calculateY(p1,10,10,10);
-//            int newZ = Rotate.calculateZ(p1,10,10,10);
-//            p1.setx(newX);
-//            p1.sety(newY);
-//            p1.setz(newZ);
-//
-//        }
+    }
+    public static Clip playMusic(String filePath) {
+        try {
+            // Create an AudioInputStream from the specified file path
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
 
 
+            // Get the Clip
+            Clip clip = AudioSystem.getClip();
+
+
+            // Open the AudioInputStream and start playing
+            clip.open(audioInputStream);
+            clip.start();
+
+
+            // Return the Clip object
+            return clip;
+
+
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+
+
+        // Return null if an error occurs
+        return null;
+    }
+    public static void setVolume(Clip clip, float volume) {
+        if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+
+            // Convert linear volume value to decibels
+            float dB = (float) (Math.log(volume) / Math.log(10.0) * 20.0);
+
+
+            gainControl.setValue(dB);
+        }
     }
 }
